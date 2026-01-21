@@ -1,65 +1,18 @@
-body {
-  font-family: sans-serif;
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-}
-
-#chatSection {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 6px;
-  background: #fafafa;
-}
-
-#chatWindow {
-  height: 300px;
-  overflow-y: auto;
-  padding: 10px;
-  background: white;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-
-.chatMsg {
-  margin: 8px 0;
-  padding: 8px 12px;
-  border-radius: 6px;
-  max-width: 70%;
-}
-
-.userMsg {
-  background: #d0e7ff;
-  align-self: flex-end;
-}
-
-.botMsg {
-  background: #e8e8e8;
+#chatControls {
+  display: flex;
+  gap: 10px;
 }
 
 #chatInput {
-  width: 100%;
+  flex: 1;
   padding: 10px;
-  box-sizing: border-box;
   font-size: 1rem;
 }
 
-textarea {
-  width: 100%;
-  padding: 8px;
-  margin: 6px 0;
-}
-
-button {
-  padding: 8px 14px;
-  margin: 6px 0;
+#sendBtn {
+  padding: 10px 16px;
+  font-size: 1rem;
   cursor: pointer;
 }
 
-#datasetList {
-  background: #fafafa;
-  padding: 10px;
-  border-radius: 6px;
-  min-height: 50px;
-}
 
