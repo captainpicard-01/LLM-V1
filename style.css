@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tiny Transformer Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Tiny Transformer Chat</h1>
+
+<section id="chatSection">
+  <div id="chatWindow"></div>
+  <input id="chatInput" type="text" placeholder="Type a message and press Enter...">
+</section>
+
+<hr>
+
+<section>
+  <h2>Add Training Example</h2>
+  <textarea id="trainIn" rows="2" placeholder="Input text"></textarea>
+  <textarea id="trainOut" rows="2" placeholder="Desired output"></textarea>
+  <button id="addExampleBtn">Add Example</button>
+</section>
+
+<section>
+  <h2>Dataset</h2>
+  <div id="datasetList"></div>
+  <button id="clearDatasetBtn">Clear Dataset</button>
+</section>
+
+<section>
+  <h2>Train Model</h2>
+  <button id="trainAllBtn">Train on Dataset</button>
+</section>
+
+<script src="tiny_transformer.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
+
