@@ -51,7 +51,7 @@ document.getElementById("clearDatasetBtn").onclick = () => {
   renderDataset();
 };
 
-// --- Training step (same as before) ---
+// --- Training step ---
 function trainExample(inputText, outputText) {
   const inputIds = encode("<bos> " + inputText);
   const targetIds = encode(outputText);
@@ -78,18 +78,48 @@ function trainExample(inputText, outputText) {
   }
 }
 
-// --- Train on entire dataset ---
+// --- Train on dataset ---
 document.getElementById("trainAllBtn").onclick = () => {
   dataset.forEach(ex => trainExample(ex.input, ex.output));
-  document.getElementById("output").textContent =
-    "Training complete on " + dataset.length + " examples.";
+  addBotMessage("Training complete on " + dataset.length + " examples.");
 };
 
-// --- Generate ---
-document.getElementById("genBtn").onclick = () => {
-  const text = document.getElementById("genInput").value.trim();
+// --- Chat UI ---
+const chatWindow = document.getElementById("chatWindow");
+const chatInput = document.getElementById("chatInput");
+
+function addUserMessage(text) {
+  const div = document.createElement("div");
+  div.className = "chatMsg userMsg";
+  div.textContent = text;
+  chatWindow.appendChild(div);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function addBotMessage(text) {
+  const div = document.createElement("div");
+  div.className = "chatMsg botMsg";
+  div.textContent = text;
+  chatWindow.appendChild(div);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function generateReply(text) {
   const ids = encode("<bos> " + text);
   const out = model.generate(ids, 12);
-  document.getElementById("output").textContent = decode(out);
-};
+  return decode(out);
+}
+
+chatInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+
+    addUserMessage(msg);
+    chatInput.value = "";
+
+    const reply = generateReply(msg);
+    addBotMessage(reply);
+  }
+});
 
