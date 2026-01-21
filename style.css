@@ -1,42 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Tiny Transformer Chat</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+}
 
-<h1>Tiny Transformer Chat</h1>
+#chatSection {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  background: #fafafa;
+}
 
-<section id="chatSection">
-  <div id="chatWindow"></div>
-  <input id="chatInput" type="text" placeholder="Type a message and press Enter...">
-</section>
+#chatWindow {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
 
-<hr>
+.chatMsg {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  max-width: 70%;
+}
 
-<section>
-  <h2>Add Training Example</h2>
-  <textarea id="trainIn" rows="2" placeholder="Input text"></textarea>
-  <textarea id="trainOut" rows="2" placeholder="Desired output"></textarea>
-  <button id="addExampleBtn">Add Example</button>
-</section>
+.userMsg {
+  background: #d0e7ff;
+  align-self: flex-end;
+}
 
-<section>
-  <h2>Dataset</h2>
-  <div id="datasetList"></div>
-  <button id="clearDatasetBtn">Clear Dataset</button>
-</section>
+.botMsg {
+  background: #e8e8e8;
+}
 
-<section>
-  <h2>Train Model</h2>
-  <button id="trainAllBtn">Train on Dataset</button>
-</section>
+#chatInput {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
 
-<script src="tiny_transformer.js"></script>
-<script src="app.js"></script>
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+}
 
-</body>
-</html>
+button {
+  padding: 8px 14px;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+#datasetList {
+  background: #fafafa;
+  padding: 10px;
+  border-radius: 6px;
+  min-height: 50px;
+}
 
