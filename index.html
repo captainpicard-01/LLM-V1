@@ -2,18 +2,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Tiny Transformer Playground</title>
+  <title>Tiny Transformer Chat</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Tiny Transformer Playground</h1>
+<h1>Tiny Transformer Chat</h1>
 
-<section>
-  <h2>Generate</h2>
-  <textarea id="genInput" rows="2" placeholder="Type a prompt..."></textarea>
-  <button id="genBtn">Generate</button>
+<section id="chatSection">
+  <div id="chatWindow"></div>
+  <input id="chatInput" type="text" placeholder="Type a message and press Enter...">
 </section>
+
+<hr>
 
 <section>
   <h2>Add Training Example</h2>
@@ -33,14 +34,10 @@
   <button id="trainAllBtn">Train on Dataset</button>
 </section>
 
-<section>
-  <h2>Output</h2>
-  <div id="output"></div>
-</section>
-
 <script src="tiny_transformer.js"></script>
 <script src="app.js"></script>
 
 </body>
 </html>
+
 
