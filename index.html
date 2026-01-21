@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tiny Transformer Playground</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 8px 14px;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+    #output {
+      background: #f3f3f3;
+      padding: 12px;
+      border-radius: 6px;
+      min-height: 80px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tiny Transformer Playground</h1>
+
+  <h3>Generate</h3>
+  <textarea id="genInput" rows="2" placeholder="Type a prompt..."></textarea>
+  <button onclick="runGenerate()">Generate</button>
+
+  <h3>Train</h3>
+  <textarea id="trainInput" rows="2" placeholder="Training input text"></textarea>
+  <textarea id="trainOutput" rows="2" placeholder="Desired output text"></textarea>
+  <button onclick="runTrain()">Train Model</button>
+
+  <h3>Output</h3>
+  <div id="output"></div>
+
+  <script src="tiny_transformer.js"></script>
+
+  <script>
+    // --- tokenizer from your JS file ---
+    const vocab = ["<pad>", "<bos>", "<eos>", "hello", "how", "are", "you", "i", "am", "fine"];
+    const wordToId = {};
+    vocab.forEach((w, i) => wordToId[w] = i);
+
+    function encodeText(text) {
+      return text.split(/\s+/).map(w => wordToId[w] ?? 0);
+    }
+    function decodeIds(ids) {
+      return ids.map(id => vocab[id] ?? "<unk>").join(" ");
+    }
+
+    // --- model instance ---
+    const model = new TinyTransformer(vocab.length, 32, 64, 16);
+
+    // --- UI: Generate ---
+    function runGenerate() {
+      const text = document.getElementById("genInput").value.trim();
+      const ids = encodeText("<bos> " + text);
+      const out = model.generate(ids, 12);
+      document.getElementById("output").textContent = decodeIds(out);
+    }
+
+    // --- Simple training step ---
+    function runTrain() {
+      const inp = document.getElementById("trainInput").value.trim();
+      const out = document.getElementById("trainOutput").value.trim();
+
+      const inputIds = encodeText("<bos> " + inp);
+      const targetIds = encodeText(out);
+
+      const logits = model.forward(inputIds);
+      const lastLogits = logits[logits.length - 1];
+
+      // softmax
+      const maxVal = Math.max(...lastLogits);
+      const exps = lastLogits.map(v => Math.exp(v - maxVal));
+      const sum = exps.reduce((a,b)=>a+b,0);
+      const probs = exps.map(v => v/sum);
+
+      // target = first token of desired output
+      const target = targetIds[0];
+
+      // gradient for Wo and bo only
+      const lr = 0.01;
+      for (let i = 0; i < model.vocabSize; i++) {
+        const grad = probs[i] - (i === target ? 1 : 0);
+        model.bo[i] -= lr * grad;
+
+        for (let j = 0; j < model.dModel; j++) {
+          const h = logits[logits.length - 2][j]; // last hidden state
+          model.Wo[j][i] -= lr * grad * h;
+        }
+      }
+
+      document.getElementById("output").textContent =
+        "Training step complete. Model nudged toward producing: " + out;
+    }
+  </script>
+
+</body>
+</html>
